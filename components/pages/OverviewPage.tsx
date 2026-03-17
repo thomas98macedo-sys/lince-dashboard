@@ -41,20 +41,20 @@ export default function OverviewPage({ base, painel, performance, financial }: O
       Saldo: p.balance,
     }));
 
-  // Status distribution
+  // Status distribution (by revenue)
   const statusData = [
-    { name: "Novos Negócios", value: painel.newBusinessCount, color: "#ff0088" },
-    { name: "Churning", value: painel.churningCount, color: "#660033" },
+    { name: "Novos Negócios", value: painel.newBusinessRevenue, color: "#ff0088" },
+    { name: "Churning", value: painel.churningRevenue, color: "#660033" },
   ];
 
-  // Service distribution from base
-  const serviceCounts: Record<string, number> = {};
+  // Service distribution from base (sum values)
+  const serviceValues: Record<string, number> = {};
   base.forEach((r) => {
     const svc = r.service.includes("TUDO") ? "FULL SERVICE" : r.service.includes("TRAFEGO") || r.service.includes("TRÁFEGO") ? "TRÁFEGO PAGO" : r.service.includes("SOCIAL") ? "SOCIAL MEDIA" : r.service.includes("LANDING") || r.service.includes("SITE") ? "WEB/LANDING" : "OUTROS";
-    serviceCounts[svc] = (serviceCounts[svc] || 0) + 1;
+    serviceValues[svc] = (serviceValues[svc] || 0) + r.value;
   });
   const serviceColors = ["#ff0088", "#cc0066", "#990044", "#00ffff", "#ff44aa"];
-  const serviceData = Object.entries(serviceCounts).map(([name, value], i) => ({
+  const serviceData = Object.entries(serviceValues).map(([name, value], i) => ({
     name,
     value,
     color: serviceColors[i % serviceColors.length],
