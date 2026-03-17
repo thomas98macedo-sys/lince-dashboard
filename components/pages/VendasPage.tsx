@@ -56,7 +56,7 @@ export default function VendasPage({ data }: VendasPageProps) {
       }
     });
     return MONTH_ORDER
-      .filter((m) => map[m])
+      .filter((m) => m !== "DEZEMBRO" && map[m])
       .map((m) => ({
         month: getMonthShort(m),
         "Novos Negócios": map[m].novos,
