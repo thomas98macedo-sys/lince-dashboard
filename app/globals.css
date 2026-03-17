@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Share+Tech+Mono&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --neon-pink: #ff0088;
+  --neon-cyan: #00ffff;
+  --dark-bg: #000000;
+  --panel-bg: rgba(10, 10, 30, 0.7);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #000000;
+  color: #e0e0e0;
+  font-family: 'Share Tech Mono', monospace;
+  overflow-x: hidden;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ff008855;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ff0088;
+}
+
+/* Neon text */
+.text-neon {
+  color: #ff0088;
+  text-shadow: 0 0 7px #ff0088, 0 0 10px #ff008877, 0 0 21px #ff008855;
+}
+
+.text-neon-cyan {
+  color: #00ffff;
+  text-shadow: 0 0 7px #00ffff, 0 0 10px #00ffff77, 0 0 21px #00ffff55;
+}
+
+/* Glassmorphism panel */
+.glass-panel {
+  background: linear-gradient(135deg, rgba(10, 10, 30, 0.8), rgba(20, 5, 25, 0.6));
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 0, 136, 0.15);
+  border-radius: 16px;
+}
+
+.glass-panel:hover {
+  border-color: rgba(255, 0, 136, 0.35);
+  box-shadow: 0 0 15px rgba(255, 0, 136, 0.1);
+}
+
+/* Glow card */
+.glow-card {
+  background: linear-gradient(145deg, rgba(10, 10, 30, 0.9), rgba(30, 5, 35, 0.7));
+  border: 1px solid rgba(255, 0, 136, 0.2);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.glow-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #ff0088, transparent);
+  opacity: 0.6;
+}
+
+.glow-card:hover {
+  border-color: rgba(255, 0, 136, 0.5);
+  box-shadow: 0 0 20px rgba(255, 0, 136, 0.15), 0 0 40px rgba(255, 0, 136, 0.05);
+  transform: translateY(-2px);
+}
+
+/* Chart container */
+.chart-container {
+  background: linear-gradient(145deg, rgba(10, 10, 30, 0.9), rgba(20, 5, 25, 0.7));
+  border: 1px solid rgba(255, 0, 136, 0.15);
+  border-radius: 16px;
+  padding: 24px;
+  position: relative;
+}
+
+.chart-container::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #ff008844, transparent);
+}
+
+/* Animated gradient border */
+@keyframes borderGlow {
+  0%, 100% { border-color: rgba(255, 0, 136, 0.2); }
+  50% { border-color: rgba(255, 0, 136, 0.5); }
+}
+
+.animate-border-glow {
+  animation: borderGlow 3s ease-in-out infinite;
+}
+
+/* Loading shimmer */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255, 0, 136, 0.1), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Recharts overrides */
+.recharts-text {
+  fill: #888 !important;
+  font-family: 'Share Tech Mono', monospace !important;
+  font-size: 11px !important;
+}
+
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: rgba(255, 0, 136, 0.06) !important;
+}
+
+.recharts-tooltip-wrapper {
+  outline: none !important;
+}
