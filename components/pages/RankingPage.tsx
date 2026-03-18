@@ -266,7 +266,7 @@ export default function RankingPage() {
                   />
                   <button
                     onClick={() => fileInputRefs.current[vendedor.id]?.click()}
-                    className={`w-24 h-24 rounded-full overflow-hidden relative group cursor-pointer ${
+                    className={`w-28 h-28 aspect-square rounded-full overflow-hidden relative group cursor-pointer ${
                       isLeader
                         ? "border-matrix-pink shadow-neon"
                         : metaBatida
@@ -274,13 +274,14 @@ export default function RankingPage() {
                         : "border-gray-700"
                     }`}
                     style={{ borderWidth: isLeader ? 3 : 2, borderStyle: "solid" }}
-                    title="Clique para adicionar foto"
+                    title={photoUrls[vendedor.id] ? "Clique para trocar foto" : "Clique para adicionar foto"}
                   >
                     {photoUrls[vendedor.id] ? (
                       <img
                         src={photoUrls[vendedor.id]}
                         alt={vendedor.nome}
                         className="w-full h-full object-cover"
+                        style={{ objectPosition: "center 20%" }}
                       />
                     ) : (
                       <img
@@ -301,9 +302,12 @@ export default function RankingPage() {
                         }}
                       />
                     )}
-                    {/* Camera overlay on hover */}
-                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-full">
-                      <Camera size={20} className="text-white" />
+                    {/* Camera overlay on hover with label */}
+                    <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-full">
+                      <Camera size={20} className="text-white mb-1" />
+                      <span className="text-[9px] text-white/80 font-mono">
+                        {photoUrls[vendedor.id] ? "TROCAR" : "ADICIONAR"}
+                      </span>
                     </div>
                   </button>
                   {/* Pulsing ring for leader */}
