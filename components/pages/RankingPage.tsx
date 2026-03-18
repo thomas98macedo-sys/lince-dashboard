@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trophy, Crown } from "lucide-react";
+import { Trophy, Crown, Camera } from "lucide-react";
 import { formatBRL } from "@/lib/utils";
 
 const META = 14000;
@@ -97,7 +97,30 @@ export default function RankingPage() {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editValue, setEditValue] = useState("");
   const [celebratedIds, setCelebratedIds] = useState<Set<number>>(new Set());
+  const [photoUrls, setPhotoUrls] = useState<Record<number, string>>({});
   const confettiRef = useRef<HTMLCanvasElement>(null);
+  const fileInputRefs = useRef<Record<number, HTMLInputElement | null>>({});
+
+  // Load photos from localStorage on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("lince-ranking-photos");
+      if (saved) setPhotoUrls(JSON.parse(saved));
+    } catch {}
+  }, []);
+
+  const handlePhotoUpload = useCallback((vendedorId: number, file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target?.result as string;
+      setPhotoUrls((prev) => {
+        const updated = { ...prev, [vendedorId]: dataUrl };
+        try { localStorage.setItem("lince-ranking-photos", JSON.stringify(updated)); } catch {}
+        return updated;
+      });
+    };
+    reader.readAsDataURL(file);
+  }, []);
 
   // Sorted ranking
   const ranked = useMemo(() => {
@@ -228,40 +251,64 @@ export default function RankingPage() {
                 {/* Position Badge */}
                 <div className="absolute top-3 left-3 text-lg">{MEDAL[index]}</div>
 
-                {/* Photo */}
+                {/* Photo — click to upload */}
                 <div className={`relative mt-2 mb-3 ${isLeader ? "mt-4" : ""}`}>
-                  <div
-                    className={`w-24 h-24 rounded-full overflow-hidden border-3 ${
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    ref={(el) => { fileInputRefs.current[vendedor.id] = el; }}
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handlePhotoUpload(vendedor.id, file);
+                      e.target.value = "";
+                    }}
+                  />
+                  <button
+                    onClick={() => fileInputRefs.current[vendedor.id]?.click()}
+                    className={`w-24 h-24 rounded-full overflow-hidden relative group cursor-pointer ${
                       isLeader
                         ? "border-matrix-pink shadow-neon"
                         : metaBatida
                         ? "border-green-400 shadow-[0_0_15px_rgba(74,222,128,0.4)]"
                         : "border-gray-700"
                     }`}
-                    style={{ borderWidth: isLeader ? 3 : 2 }}
+                    style={{ borderWidth: isLeader ? 3 : 2, borderStyle: "solid" }}
+                    title="Clique para adicionar foto"
                   >
-                    <img
-                      src={vendedor.foto}
-                      alt={vendedor.nome}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        // Fallback to initials on error
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = "none";
-                        const parent = target.parentElement;
-                        if (parent && !parent.querySelector(".initials-fallback")) {
-                          const div = document.createElement("div");
-                          div.className =
-                            "initials-fallback w-full h-full flex items-center justify-center bg-gradient-to-br from-matrix-pink/20 to-black text-matrix-pink font-display text-2xl font-bold";
-                          div.textContent = vendedor.initials;
-                          parent.appendChild(div);
-                        }
-                      }}
-                    />
-                  </div>
+                    {photoUrls[vendedor.id] ? (
+                      <img
+                        src={photoUrls[vendedor.id]}
+                        alt={vendedor.nome}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <img
+                        src={vendedor.foto}
+                        alt={vendedor.nome}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = "none";
+                          const parent = target.parentElement;
+                          if (parent && !parent.querySelector(".initials-fallback")) {
+                            const div = document.createElement("div");
+                            div.className =
+                              "initials-fallback w-full h-full flex items-center justify-center bg-gradient-to-br from-matrix-pink/20 to-black text-matrix-pink font-display text-2xl font-bold";
+                            div.textContent = vendedor.initials;
+                            parent.appendChild(div);
+                          }
+                        }}
+                      />
+                    )}
+                    {/* Camera overlay on hover */}
+                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-full">
+                      <Camera size={20} className="text-white" />
+                    </div>
+                  </button>
                   {/* Pulsing ring for leader */}
                   {isLeader && (
-                    <div className="absolute inset-0 rounded-full animate-ping border-2 border-matrix-pink/30" style={{ animationDuration: "2s" }} />
+                    <div className="absolute inset-0 rounded-full animate-ping border-2 border-matrix-pink/30 pointer-events-none" style={{ animationDuration: "2s" }} />
                   )}
                 </div>
 
