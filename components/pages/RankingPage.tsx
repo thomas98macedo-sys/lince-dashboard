@@ -183,7 +183,7 @@ export default function RankingPage() {
               RANKING DE VENDAS DO MÊS
             </h2>
             <p className="text-xs text-gray-600 font-mono">
-              Meta individual: {formatBRL(META)} // Competição em tempo real
+              Meta individual: {formatBRL(META)} — Competição em tempo real
             </p>
           </div>
         </div>
