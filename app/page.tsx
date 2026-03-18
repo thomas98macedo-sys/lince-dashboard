@@ -18,6 +18,7 @@ const PainelPage = dynamic(() => import("@/components/pages/PainelPage"), { ssr:
 const PerformancePage = dynamic(() => import("@/components/pages/PerformancePage"), { ssr: false });
 const FinanceiroPage = dynamic(() => import("@/components/pages/FinanceiroPage"), { ssr: false });
 const InsightsPage = dynamic(() => import("@/components/pages/InsightsPage"), { ssr: false });
+const RankingPage = dynamic(() => import("@/components/pages/RankingPage"), { ssr: false });
 
 export default function Dashboard() {
   const [activePage, setActivePage] = useState("overview");
@@ -84,6 +85,7 @@ export default function Dashboard() {
           {activePage === "insights" && (
             <InsightsPage base={base} painel={painel} performance={performance} financial={financial} />
           )}
+          {activePage === "ranking" && <RankingPage />}
         </main>
 
         {/* Footer */}

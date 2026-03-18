@@ -9,6 +9,7 @@ import {
   TrendingUp,
   Lightbulb,
   DollarSign,
+  Trophy,
   ChevronLeft,
   ChevronRight,
   Menu,
@@ -23,6 +24,7 @@ const navItems = [
   { id: "performance", label: "Performance", icon: TrendingUp },
   { id: "financeiro", label: "Financeiro", icon: DollarSign },
   { id: "insights", label: "Insights", icon: Lightbulb },
+  { id: "ranking", label: "Ranking Vendas", icon: Trophy },
 ];
 
 interface SidebarProps {

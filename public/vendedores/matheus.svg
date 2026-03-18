@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a0033"/>
+      <stop offset="100%" style="stop-color:#0a0015"/>
+    </linearGradient>
+  </defs>
+  <circle cx="150" cy="150" r="150" fill="url(#bg)"/>
+  <circle cx="150" cy="150" r="145" fill="none" stroke="#00ffff" stroke-width="3" opacity="0.5"/>
+  <text x="150" y="165" font-family="Arial Black, sans-serif" font-size="90" font-weight="900" fill="#00ffff" text-anchor="middle">MB</text>
+</svg>
